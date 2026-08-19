@@ -1,0 +1,31 @@
+﻿# .NET
+bin/
+obj/
+dist/
+*.user
+*.suo
+
+# Visual Studio
+.vs/
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Debug symbols
+*.pdb
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+*.before-*.txt
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
