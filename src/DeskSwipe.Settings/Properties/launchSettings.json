@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DeskSwipe.Settings (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DeskSwipe.Settings (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

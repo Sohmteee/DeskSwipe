@@ -173,6 +173,48 @@ internal sealed class ResidentHost : Form
     }
 }
 
+internal static class RuntimeSettings
+{
+    public static string GetBounceStrength()
+    {
+        try
+        {
+            var appData =
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.ApplicationData);
+
+            var path =
+                System.IO.Path.Combine(
+                    appData,
+                    "DeskSwipe",
+                    "settings.json");
+
+            if (!System.IO.File.Exists(path))
+                return "balanced";
+
+            var json =
+                System.IO.File.ReadAllText(path);
+
+            using var document =
+                System.Text.Json.JsonDocument.Parse(json);
+
+            if (document.RootElement.TryGetProperty(
+                    "bounceStrength",
+                    out var value))
+            {
+                var strength = value.GetString();
+
+                if (!string.IsNullOrWhiteSpace(strength))
+                    return strength.ToLowerInvariant();
+            }
+        }
+        catch
+        {
+        }
+
+        return "balanced";
+    }
+}
 internal sealed class EdgeBounce
 {
     private bool _running;
@@ -194,11 +236,15 @@ internal sealed class EdgeBounce
             using var screenshot =
                 ScreenCapture.Capture(bounds);
 
+            var strength =
+                RuntimeSettings.GetBounceStrength();
+
             using var form =
                 new EdgeBounceForm(
                     bounds,
                     screenshot,
-                    direction);
+                    direction,
+                    strength);
 
             form.Show();
             form.ForceTopMost();
@@ -211,22 +257,26 @@ internal sealed class EdgeBounce
     }
 }
 
+
 internal sealed class EdgeBounceForm : Form
 {
     private readonly Rectangle _bounds;
     private readonly Bitmap _frame;
     private readonly SwipeDirection _direction;
+    private readonly string _strength;
 
     private double _offset;
 
     public EdgeBounceForm(
         Rectangle bounds,
         Bitmap frame,
-        SwipeDirection direction)
+        SwipeDirection direction,
+        string strength)
     {
         _bounds = bounds;
         _frame = (Bitmap)frame.Clone();
         _direction = direction;
+        _strength = strength;
 
         FormBorderStyle = FormBorderStyle.None;
         ShowInTaskbar = false;
@@ -282,11 +332,37 @@ internal sealed class EdgeBounceForm : Form
     {
         var clock = Stopwatch.StartNew();
 
-        const double outwardMs = 90.0;
-        const double returnMs = 235.0;
+        double outwardMs;
+        double returnMs;
+        double distanceRatio;
+        double spring;
+
+        switch (_strength)
+        {
+            case "soft":
+                outwardMs = 105.0;
+                returnMs = 265.0;
+                distanceRatio = 0.055;
+                spring = 0.82;
+                break;
+
+            case "firm":
+                outwardMs = 72.0;
+                returnMs = 190.0;
+                distanceRatio = 0.090;
+                spring = 1.28;
+                break;
+
+            default:
+                outwardMs = 90.0;
+                returnMs = 235.0;
+                distanceRatio = 0.072;
+                spring = 1.05;
+                break;
+        }
 
         var maxDistance =
-            _bounds.Width * 0.072;
+            _bounds.Width * distanceRatio;
 
         var directionSign =
             _direction == SwipeDirection.Left
@@ -322,8 +398,8 @@ internal sealed class EdgeBounceForm : Form
 
                 // EaseOutBack gives a subtle rubber-band spring
                 // around the resting position.
-                const double c1 = 1.05;
-                const double c3 = c1 + 1.0;
+                var c1 = spring;
+                var c3 = c1 + 1.0;
 
                 var eased =
                     1.0 +
@@ -1851,6 +1927,11 @@ internal static class NativeMethods
         int cy,
         uint flags);
 }
+
+
+
+
+
 
 
 

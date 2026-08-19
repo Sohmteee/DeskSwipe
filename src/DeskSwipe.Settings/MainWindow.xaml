@@ -1,0 +1,301 @@
+﻿<Window
+    x:Class="DeskSwipe.Settings.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="DeskSwipe Settings">
+
+    <Grid x:Name="RootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ScrollViewer>
+            <StackPanel
+                Width="760"
+                Padding="32"
+                Spacing="28"
+                HorizontalAlignment="Center">
+
+                <StackPanel Spacing="6">
+                    <TextBlock
+                        Text="DeskSwipe"
+                        FontSize="30"
+                        FontWeight="SemiBold" />
+
+                    <TextBlock
+                        Text="Customize how DeskSwipe feels and behaves."
+                        FontSize="14"
+                        Opacity="0.7" />
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Text="Gestures"
+                        FontSize="18"
+                        FontWeight="SemiBold" />
+
+                    <Border
+                        Padding="18"
+                        CornerRadius="12"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+
+                        <StackPanel Spacing="18">
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Swipe direction"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Choose how horizontal swipes move between desktops."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="SwipeDirectionComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="0"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Natural" />
+                                    <ComboBoxItem Content="Reversed" />
+                                </ComboBox>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Edge behavior"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Choose what happens at the first or last desktop."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="EdgeBehaviorComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="0"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Bounce" />
+                                    <ComboBoxItem Content="Do nothing" />
+                                </ComboBox>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Bounce strength"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Adjust how strong the rubber-band effect feels."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="BounceStrengthComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="1"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Soft" />
+                                    <ComboBoxItem Content="Balanced" />
+                                    <ComboBoxItem Content="Firm" />
+                                </ComboBox>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Text="Feedback"
+                        FontSize="18"
+                        FontWeight="SemiBold" />
+
+                    <Border
+                        Padding="18"
+                        CornerRadius="12"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+
+                        <StackPanel Spacing="18">
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Edge message"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Show feedback when you reach either end."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ToggleSwitch
+                                    x:Name="EdgeMessageToggle"
+                                    Grid.Column="1"
+                                    IsOn="True" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Message style"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Choose what the edge toast displays."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="MessageStyleComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="0"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Start / End" />
+                                    <ComboBoxItem Content="Desktop name" />
+                                    <ComboBoxItem Content="Desktop number" />
+                                </ComboBox>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Message duration"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Choose how long the toast stays visible."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="MessageDurationComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="1"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Short" />
+                                    <ComboBoxItem Content="Normal" />
+                                    <ComboBoxItem Content="Long" />
+                                </ComboBox>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Text="System"
+                        FontSize="18"
+                        FontWeight="SemiBold" />
+
+                    <Border
+                        Padding="18"
+                        CornerRadius="12"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+
+                        <StackPanel Spacing="18">
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Start with Windows"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Launch DeskSwipe automatically when you sign in."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ToggleSwitch
+                                    x:Name="StartWithWindowsToggle"
+                                    Grid.Column="1"
+                                    IsOn="True" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Open Settings at sign-in"
+                                        FontWeight="SemiBold" />
+
+                                    <TextBlock
+                                        Text="Show the Settings window when DeskSwipe starts with Windows."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ToggleSwitch
+                                    x:Name="OpenSettingsOnStartupToggle"
+                                    Grid.Column="1"
+                                    IsOn="False" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Theme"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Control how DeskSwipe follows your system theme."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <ComboBox
+                                    x:Name="ThemeComboBox"
+                                    Grid.Column="1"
+                                    SelectedIndex="0"
+                                    HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="System" />
+                                    <ComboBoxItem Content="Light" />
+                                    <ComboBoxItem Content="Dark" />
+                                </ComboBox>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Text="About"
+                        FontSize="18"
+                        FontWeight="SemiBold" />
+
+                    <Border
+                        Padding="18"
+                        CornerRadius="12"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Spacing="4">
+                                <TextBlock
+                                    Text="DeskSwipe"
+                                    FontWeight="SemiBold" />
+                                <TextBlock
+                                    Text="Version 0.2.0"
+                                    FontSize="12"
+                                    Opacity="0.65" />
+                            </StackPanel>
+
+                            <Button
+                                Grid.Column="1"
+                                Content="GitHub" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
+
+

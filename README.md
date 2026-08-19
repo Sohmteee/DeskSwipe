@@ -1,76 +1,157 @@
-﻿# DeskSwipe
+# DeskSwipe
 
-Smooth touchpad navigation for Windows virtual desktops.
+DeskSwipe brings configurable three-finger virtual desktop switching to compatible Windows touchpads.
 
-DeskSwipe adds gesture-based virtual desktop switching with native Windows desktop transitions and rubber-band feedback when you reach the first or last virtual desktop.
+It was developed primarily for older Dell/ALPS touchpads that do not expose native Windows Precision Touchpad desktop gestures.
 
 ## Features
 
-- Three-finger virtual desktop switching
-- Native Windows desktop transition animations
-- Rubber-band edge feedback
-- Start/end desktop toast feedback
-- Light and dark theme-aware toast UI
-- Lightweight resident helper
-- Windows 11 support
+- Three-finger horizontal virtual desktop switching
+- Native Windows desktop transitions
+- macOS-style edge bounce feedback
+- Configurable swipe direction
+- Configurable edge behavior
+- Soft, Balanced, and Firm bounce strengths
+- Optional edge feedback messages
+- Desktop name, desktop number, or Start/End message styles
+- Configurable message duration
+- Windows 11-style WinUI 3 Settings app
+- System, Light, and Dark themes
+- Start with Windows
+- Optional Settings window at sign-in
+- System tray menu
+- Custom DeskSwipe icon
+- Windows installer
 
-## Tech Stack
+## Settings
+
+### Gestures
+
+- Swipe direction: Natural or Reversed
+- Edge behavior: Bounce or Do nothing
+- Bounce strength: Soft, Balanced, or Firm
+
+### Feedback
+
+- Edge message on/off
+- Message style: Start / End, Desktop name, or Desktop number
+- Message duration: Short, Normal, or Long
+
+### System
+
+- Start with Windows
+- Open Settings at sign-in
+- Theme: System, Light, or Dark
+
+Open Settings at sign-in is disabled by default.
+
+## Launch behavior
+
+Opening DeskSwipe manually opens the Settings window and ensures the background gesture runtime is running.
+
+When Windows starts DeskSwipe automatically, the startup shortcut launches `DeskSwipeGestures.exe --startup`.
+
+The gesture runtime starts silently by default.
+
+If Open Settings at sign-in is enabled, the Settings window also opens.
+
+## Tray menu
+
+DeskSwipe runs in the notification area and provides:
+
+- Settings
+- Start with Windows
+- About
+- Quit
+
+Double-clicking the tray icon opens Settings.
+
+## How it works
+
+On the target Dell/ALPS touchpad, three-finger horizontal flicks are exposed as the extended scan code `SC10F`.
+
+DeskSwipe captures those gestures using AutoHotkey v2.
+
+Normal desktop changes use the native Windows shortcuts `Win + Ctrl + Left` and `Win + Ctrl + Right`.
+
+At the first or last desktop, DeskSwipe can display a screenshot-based rubber-band bounce animation instead of attempting to wrap around.
+
+## Components
+
+### DeskSwipe.exe
+
+C# / .NET helper responsible for the custom edge animation.
+
+### DeskSwipeGestures.exe
+
+Compiled AutoHotkey v2 runtime responsible for gesture detection, desktop switching, the tray menu, edge messages, and startup behavior.
+
+### DeskSwipe.Settings.exe
+
+WinUI 3 Settings application.
+
+Settings are stored at `%APPDATA%\DeskSwipe\settings.json`.
+
+## Technology
 
 - C#
 - .NET 8
-- Windows Forms
+- WinForms
+- WinUI 3
 - AutoHotkey v2
 - VirtualDesktopAccessor
+- Inno Setup
 
-## Project Structure
+## Build requirements
 
-    DeskSwipe/
-    ├── src/
-    │   └── DeskSwipe/
-    │       ├── Program.cs
-    │       └── DeskSwipe.csproj
-    ├── scripts/
-    │   └── SwipeDesktop.ahk
-    ├── lib/
-    │   └── VirtualDesktopAccessor.dll
-    ├── build.ps1
-    ├── README.md
-    └── .gitignore
-
-## Requirements
-
-- Windows 11
+- Windows 10 or Windows 11 x64
 - .NET 8 SDK
 - AutoHotkey v2
+- Ahk2Exe
+- Inno Setup 6
 
-## Building
+## Build
 
-Run:
+From the repository root, run `.\build.ps1`.
 
-    .\build.ps1
+The portable build is created under `release\DeskSwipe\`.
 
-The resulting build is placed in:
+The release directory contains:
 
-    dist/
+- `DeskSwipe.exe`
+- `DeskSwipeGestures.exe`
+- `DeskSwipe.ico`
+- `VirtualDesktopAccessor.dll`
+- `Settings\DeskSwipe.Settings.exe`
 
-## Current Gesture Support
+The WinUI Settings application uses its normal Release build output rather than `dotnet publish`.
 
-The current gesture implementation was developed for an older Dell ALPS touchpad.
+## Installer
 
-The ALPS driver emits an extended Tab scan code (SC10F) for its three-finger horizontal flick gesture, which DeskSwipe captures using AutoHotkey.
+Build DeskSwipe first with `.\build.ps1`.
 
-Other touchpad hardware may require different gesture handling.
+Then compile the installer with Inno Setup using:
 
-## How It Works
+`& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" ".\installer\DeskSwipe.iss"`
 
-For normal desktop navigation, DeskSwipe sends Windows' native virtual desktop keyboard shortcuts so Windows retains its normal animation and focus behavior.
+The installer is generated at `release\DeskSwipe-Setup-0.2.0.exe`.
 
-When the user swipes beyond the first or last desktop, DeskSwipe does not change desktops. Instead, its C# helper displays a short rubber-band animation to indicate that the edge has been reached.
+## Hardware compatibility
 
-## Third-Party Dependency
+DeskSwipe was developed for a Dell ALPS touchpad with hardware ID `ACPI\DLL0532`.
 
-DeskSwipe uses VirtualDesktopAccessor for querying Windows virtual desktop state.
+The current gesture implementation depends on the ALPS driver emitting `SC10F` for three-finger horizontal flicks.
 
-VirtualDesktopAccessor:
-https://github.com/Ciantic/VirtualDesktopAccessor
+Other touchpads may require different gesture detection.
 
+## Version
+
+Current release: **v0.2.0**
+
+## Credits
+
+DeskSwipe uses VirtualDesktopAccessor for Windows virtual desktop information.
+
+## License
+
+A license has not yet been selected.
