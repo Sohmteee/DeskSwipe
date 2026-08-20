@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and validate
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore DeskSwipe helper
+        run: dotnet restore src/DeskSwipe/DeskSwipe.csproj -r win-x64
+
+      - name: Build DeskSwipe helper
+        run: dotnet build src/DeskSwipe/DeskSwipe.csproj -c Release -r win-x64 --no-restore
+
+      - name: Restore Settings app
+        run: dotnet restore src/DeskSwipe.Settings/DeskSwipe.Settings.csproj -r win-x64
+
+      - name: Build Settings app
+        run: dotnet build src/DeskSwipe.Settings/DeskSwipe.Settings.csproj -c Release -r win-x64 --no-restore
+
+      - name: Validate AutoHotkey gesture source
+        shell: pwsh
+        run: |
+          $script = Get-Content scripts/SwipeDesktop.ahk -Raw
+
+          if ([string]::IsNullOrWhiteSpace($script)) {
+            throw "AutoHotkey source is empty."
+          }
+
+          $requiredPatterns = @(
+            '#Requires AutoHotkey v2.0',
+            '<!+SC10F::',
+            '<!SC10F::',
+            'SwitchDesktop("left")',
+            'SwitchDesktop("right")'
+          )
+
+          foreach ($pattern in $requiredPatterns) {
+            if (-not $script.Contains($pattern)) {
+              throw "Missing expected AutoHotkey pattern: $pattern"
+            }
+          }

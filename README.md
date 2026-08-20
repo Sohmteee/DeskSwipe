@@ -167,11 +167,84 @@ The installer is generated at `release\DeskSwipe-Setup-0.2.1.exe`.
 
 ## Hardware compatibility
 
-DeskSwipe was developed for a Dell ALPS touchpad with hardware ID `ACPI\DLL0532`.
+DeskSwipe was developed for older Dell/ALPS touchpads that expose three-finger horizontal flicks as keyboard-like scan-code events instead of native Windows Precision Touchpad gestures.
 
-The current gesture implementation depends on the ALPS driver emitting `SC10F` for three-finger horizontal flicks.
+The verified development touchpad is a Dell ALPS touchpad with hardware ID `ACPI\DLL0532`.
 
-Other touchpads may require different gesture detection.
+The current gesture implementation depends on the ALPS driver emitting the extended scan code `SC10F` for three-finger horizontal flicks:
+
+- `<!+SC10F` switches one desktop to the left
+- `<!SC10F` switches one desktop to the right
+
+Other touchpads may require different gesture detection. If your touchpad uses Windows Precision Touchpad gestures, Synaptics, ELAN, HID-over-I2C, or a different ALPS driver, DeskSwipe may not detect three-finger swipes until broader gesture detection is added.
+
+### Compatibility matrix
+
+| Hardware or driver | Status | Notes |
+| --- | --- | --- |
+| Dell ALPS touchpad, `ACPI\DLL0532`, emitting `SC10F` | Verified | Original development target. |
+| Other ALPS touchpads emitting `SC10F` | Likely compatible | Please report the laptop model, hardware ID, driver version, and observed scan codes if it works or fails. |
+| ALPS touchpads emitting a different scan code | Not yet supported | The gesture binding currently needs a code change. |
+| Windows Precision Touchpad devices | Not supported by the current runtime | These usually expose gestures through Windows touch input rather than `SC10F`. |
+| Synaptics, ELAN, HID-over-I2C, or unknown touchpads | Unknown | Open a compatibility report with hardware and scan-code details. |
+
+### How to check your touchpad
+
+1. Open Device Manager.
+2. Find the touchpad under **Mice and other pointing devices** or **Human Interface Devices**.
+3. Open **Properties**.
+4. On the **Details** tab, select **Hardware Ids** and note the values.
+5. On the **Driver** tab, note the provider, version, and date.
+6. Use an AutoHotkey key history or scan-code viewer to check whether a three-finger horizontal flick emits `SC10F`.
+
+## Troubleshooting
+
+### Three-finger swipes do nothing
+
+- Confirm DeskSwipe is running in the notification area.
+- Confirm your touchpad emits `SC10F` for three-finger horizontal flicks.
+- Confirm AutoHotkey hooks are not blocked by another gesture utility or touchpad driver tool.
+- Try running DeskSwipe manually once, then use the tray menu to quit and start it again.
+- If the touchpad emits a different scan code, open a bug report with the scan-code details.
+
+### Windows changes desktops but DeskSwipe does not bounce at the edge
+
+- Confirm `VirtualDesktopAccessor.dll` is next to `DeskSwipe.exe` in the portable or installed directory.
+- Confirm edge behavior is set to **Bounce** in Settings.
+- Confirm there is more than one virtual desktop.
+- Check whether security software blocked `DeskSwipe.exe` from taking the temporary desktop screenshot used for the bounce animation.
+
+### The tray icon is missing
+
+- Check the hidden icons flyout in the Windows notification area.
+- Start DeskSwipe again from the Start menu or portable folder.
+- Confirm `DeskSwipe.ico` is present next to `DeskSwipeGestures.exe`.
+
+### DeskSwipe does not start with Windows
+
+- Open Settings and toggle **Start with Windows** off and on again.
+- Confirm the startup shortcut exists at `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\DeskSwipe.lnk`.
+- If Windows startup launches the app but Settings opens unexpectedly, check whether **Open Settings at sign-in** is enabled.
+
+### Settings changes are not saved
+
+- Confirm DeskSwipe can write to `%APPDATA%\DeskSwipe\settings.json`.
+- Quit DeskSwipe from the tray menu, reopen it, and change the setting again.
+- If the file exists but looks invalid, attach it to a bug report after removing any private information.
+
+### What to include in a bug report
+
+For gesture detection or compatibility issues, include:
+
+- Windows version
+- DeskSwipe version
+- Laptop model
+- Touchpad manufacturer/model
+- Touchpad hardware ID
+- Touchpad driver provider, version, and date
+- Whether three-finger flicks emit `SC10F` or a different scan code
+- Whether the tray icon appears
+- Whether normal Windows shortcuts `Win + Ctrl + Left/Right` work
 
 ## Version
 
