@@ -1,4 +1,31 @@
-# DeskSwipe
+<p align="center">
+  <img src="assets/DeskSwipe.png" alt="DeskSwipe" width="140">
+</p>
+
+<h1 align="center">DeskSwipe</h1>
+
+<p align="center">
+  Configurable three-finger virtual desktop switching for Windows touchpads.
+</p>
+
+<p align="center">
+  <a href="https://github.com/Sohmteee/DeskSwipe/releases/latest"><img src="https://img.shields.io/github/v/release/Sohmteee/DeskSwipe?label=release" alt="Latest release"></a>
+  <a href="https://github.com/Sohmteee/DeskSwipe/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Sohmteee/DeskSwipe" alt="License"></a>
+  <img src="https://img.shields.io/badge/platform-Windows-0078D4" alt="Windows">
+  <img src="https://img.shields.io/github/downloads/Sohmteee/DeskSwipe/total" alt="Downloads">
+</p>
+
+<p align="center">
+  <a href="https://github.com/Sohmteee/DeskSwipe/releases/latest"><strong>Download latest release</strong></a>
+  |
+  <a href="ROADMAP.md">Roadmap</a>
+  |
+  <a href="CHANGELOG.md">Changelog</a>
+  |
+  <a href="CONTRIBUTING.md">Contributing</a>
+</p>
+
+---
 
 DeskSwipe brings configurable three-finger virtual desktop switching to compatible Windows touchpads.
 
