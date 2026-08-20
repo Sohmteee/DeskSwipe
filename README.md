@@ -1,4 +1,4 @@
-# DeskSwipe
+﻿# DeskSwipe
 
 DeskSwipe brings configurable three-finger virtual desktop switching to compatible Windows touchpads.
 
@@ -21,7 +21,8 @@ It was developed primarily for older Dell/ALPS touchpads that do not expose nati
 - Optional Settings window at sign-in
 - System tray menu
 - Custom DeskSwipe icon
-- Windows installer
+
+- Desktop shortcut
 
 ## Settings
 
@@ -134,7 +135,7 @@ Then compile the installer with Inno Setup using:
 
 `& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" ".\installer\DeskSwipe.iss"`
 
-The installer is generated at `release\DeskSwipe-Setup-0.2.0.exe`.
+The installer is generated at `release\DeskSwipe-Setup-0.2.1.exe`.
 
 ## Hardware compatibility
 
@@ -146,7 +147,7 @@ Other touchpads may require different gesture detection.
 
 ## Version
 
-Current release: **v0.2.0**
+Current release: **v0.2.1**
 
 ## Credits
 
@@ -155,3 +156,5 @@ DeskSwipe uses VirtualDesktopAccessor for Windows virtual desktop information.
 ## License
 
 A license has not yet been selected.
+
+
