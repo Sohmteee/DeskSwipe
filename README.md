@@ -156,4 +156,4 @@ DeskSwipe uses VirtualDesktopAccessor for Windows virtual desktop information.
 
 ## License
 
-A license has not yet been selected.
+DeskSwipe is licensed under the MIT License. See `LICENSE` for details.
