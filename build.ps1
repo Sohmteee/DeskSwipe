@@ -18,7 +18,7 @@ $gestureExe = Join-Path $publish "DeskSwipeGestures.exe"
 
 $ahkCompiler = "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
 $ahkBase = "C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe"
-$tempGestureExe = Join-Path $env:TEMP "DeskSwipeGestures.exe"
+$tempGestureExe = Join-Path ([IO.Path]::GetTempPath()) ("DeskSwipeGestures-" + [guid]::NewGuid().ToString("N") + ".exe")
 
 if (-not (Test-Path $ahkCompiler)) {
     throw "Ahk2Exe.exe was not found."
@@ -132,6 +132,7 @@ Write-Host ""
 
 Get-ChildItem $publish |
     Select-Object Name, Length
+
 
 
 

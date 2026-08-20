@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace DeskSwipe.Settings
 {
@@ -17,7 +18,52 @@ namespace DeskSwipe.Settings
         {
             InitializeComponent();
 
+            EnsureGestureRuntime();
+
             Activated += MainWindow_Activated;
+        }
+
+        private void EnsureGestureRuntime()
+        {
+            try
+            {
+                if (Process.GetProcessesByName("DeskSwipeGestures").Length > 0)
+                    return;
+
+                var settingsExe = Environment.ProcessPath;
+
+                if (string.IsNullOrWhiteSpace(settingsExe))
+                    return;
+
+                var settingsDirectory = Path.GetDirectoryName(settingsExe);
+
+                if (string.IsNullOrWhiteSpace(settingsDirectory))
+                    return;
+
+                var appDirectory = Directory.GetParent(settingsDirectory)?.FullName;
+
+                if (string.IsNullOrWhiteSpace(appDirectory))
+                    return;
+
+                var gestureExe = Path.Combine(appDirectory, "DeskSwipeGestures.exe");
+
+                if (!File.Exists(gestureExe))
+                    return;
+
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = gestureExe,
+                    WorkingDirectory = appDirectory,
+                    UseShellExecute = false
+                });
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(
+                    Path.Combine(Path.GetTempPath(), "DeskSwipe-runtime-error.txt"),
+                    ex.ToString()
+                );
+            }
         }
 
         private async void MainWindow_Activated(
@@ -364,6 +410,11 @@ namespace DeskSwipe.Settings
         }
     }
 }
+
+
+
+
+
 
 
 
