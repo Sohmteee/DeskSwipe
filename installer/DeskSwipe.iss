@@ -42,6 +42,7 @@ Source: "..\release\DeskSwipe\DeskSwipe.ico"; DestDir: "{app}"; Flags: ignorever
 Source: "..\release\DeskSwipe\Settings\*"; DestDir: "{app}\Settings"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
+Name: "{userdesktop}\DeskSwipe"; Filename: "{app}\Settings\DeskSwipe.Settings.exe"; WorkingDir: "{app}\Settings"; IconFilename: "{app}\DeskSwipe.ico"
 Name: "{userstartup}\DeskSwipe"; Filename: "{app}\DeskSwipeGestures.exe"; Parameters: "--startup"; WorkingDir: "{app}"; IconFilename: "{app}\DeskSwipe.ico"
 
 Name: "{userprograms}\DeskSwipe"; Filename: "{app}\Settings\DeskSwipe.Settings.exe"; WorkingDir: "{app}\Settings"; IconFilename: "{app}\DeskSwipe.ico"
@@ -49,3 +50,4 @@ Name: "{userprograms}\DeskSwipe"; Filename: "{app}\Settings\DeskSwipe.Settings.e
 Name: "{userprograms}\DeskSwipe Settings"; Filename: "{app}\Settings\DeskSwipe.Settings.exe"; WorkingDir: "{app}\Settings"; IconFilename: "{app}\DeskSwipe.ico"
 [Run]
 Filename: "{app}\Settings\DeskSwipe.Settings.exe"; Description: "Open DeskSwipe"; Flags: nowait postinstall skipifsilent
+
