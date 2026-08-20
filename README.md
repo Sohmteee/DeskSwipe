@@ -1,4 +1,4 @@
-﻿# DeskSwipe
+# DeskSwipe
 
 DeskSwipe brings configurable three-finger virtual desktop switching to compatible Windows touchpads.
 
@@ -22,6 +22,7 @@ It was developed primarily for older Dell/ALPS touchpads that do not expose nati
 - System tray menu
 - Custom DeskSwipe icon
 
+- Windows installer
 - Desktop shortcut
 
 ## Settings
@@ -156,5 +157,3 @@ DeskSwipe uses VirtualDesktopAccessor for Windows virtual desktop information.
 ## License
 
 A license has not yet been selected.
-
-
