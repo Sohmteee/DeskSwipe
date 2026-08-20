@@ -1,5 +1,5 @@
 ﻿#define MyAppName "DeskSwipe"
-#define MyAppVersion "0.2.0"
+#define MyAppVersion "0.2.1"
 #define MyAppPublisher "Sohmteee"
 #define MyAppExeName "DeskSwipeGestures.exe"
 
@@ -16,7 +16,7 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 
 OutputDir=..\release
-OutputBaseFilename=DeskSwipe-Setup-0.2.0
+OutputBaseFilename=DeskSwipe-Setup-0.2.1
 
 Compression=lzma2
 SolidCompression=yes
@@ -50,4 +50,5 @@ Name: "{userprograms}\DeskSwipe"; Filename: "{app}\Settings\DeskSwipe.Settings.e
 Name: "{userprograms}\DeskSwipe Settings"; Filename: "{app}\Settings\DeskSwipe.Settings.exe"; WorkingDir: "{app}\Settings"; IconFilename: "{app}\DeskSwipe.ico"
 [Run]
 Filename: "{app}\Settings\DeskSwipe.Settings.exe"; Description: "Open DeskSwipe"; Flags: nowait postinstall skipifsilent
+
 
