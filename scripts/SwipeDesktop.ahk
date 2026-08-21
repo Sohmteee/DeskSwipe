@@ -170,6 +170,11 @@ HideDesktopToast() {
     if !toastGui
         return
 
+    if !IsObject(toastGui) {
+        toastGui := 0
+        return
+    }
+
     try {
         hwnd := toastGui.Hwnd
     } catch {
@@ -210,6 +215,21 @@ HideDesktopToast() {
 }
 
 ShowCurrentDesktopToast() {
+    try {
+        ShowCurrentDesktopToastCore()
+    } catch as err {
+        global toastGui
+
+        try {
+            if IsObject(toastGui)
+                toastGui.Destroy()
+        }
+
+        toastGui := 0
+    }
+}
+
+ShowCurrentDesktopToastCore() {
     global toastGui
     global GetCurrentDesktopNumberProc
     global GetDesktopCountProc
@@ -273,20 +293,20 @@ ShowCurrentDesktopToast() {
         transparency := 232
     }
 
-    toastGui := Gui(
+    toast := Gui(
         "+AlwaysOnTop -Caption +ToolWindow +E0x20"
     )
 
-    toastGui.BackColor := bg
-    toastGui.MarginX := 14
-    toastGui.MarginY := 10
+    toast.BackColor := bg
+    toast.MarginX := 14
+    toast.MarginY := 10
 
-    toastGui.SetFont(
+    toast.SetFont(
         "s11 c" fg,
         "Segoe UI Variable Text"
     )
 
-    label := toastGui.AddText(
+    label := toast.AddText(
         "x14 y10 w216 h28 Center +0x200",
         toastText
     )
@@ -296,11 +316,12 @@ ShowCurrentDesktopToast() {
         "Segoe UI Variable Text"
     )
 
-    toastGui.Show(
+    toast.Show(
         "NoActivate w244 h48 Hide"
     )
 
-    hwnd := toastGui.Hwnd
+    hwnd := toast.Hwnd
+    toastGui := toast
 
     DetectHiddenWindows true
 
@@ -317,14 +338,14 @@ ShowCurrentDesktopToast() {
     x := (A_ScreenWidth - 244) // 2
     y := A_ScreenHeight - 48 - 72
 
-    toastGui.Move(
+    toast.Move(
         x,
         y,
         244,
         48
     )
 
-    toastGui.Show(
+    toast.Show(
         "NoActivate"
     )
 

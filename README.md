@@ -76,7 +76,9 @@ Open Settings at sign-in is disabled by default.
 
 ## Launch behavior
 
-Opening DeskSwipe manually opens the Settings window and ensures the background gesture runtime is running.
+Opening DeskSwipe manually starts the background gesture runtime.
+
+Open DeskSwipe Settings from the tray menu or the DeskSwipe Settings shortcut.
 
 When Windows starts DeskSwipe automatically, the startup shortcut launches `DeskSwipeGestures.exe --startup`.
 
