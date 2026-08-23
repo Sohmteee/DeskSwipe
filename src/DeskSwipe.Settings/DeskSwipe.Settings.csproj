@@ -42,6 +42,10 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\DeskSwipe.Settings.Core\DeskSwipe.Settings.Core.csproj" />
+	</ItemGroup>
+
 	<PropertyGroup>
     <ApplicationIcon>..\..\assets\DeskSwipe.ico</ApplicationIcon>
 

@@ -3,7 +3,6 @@ using Microsoft.UI.Windowing;
 using WinRT.Interop;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
@@ -214,7 +213,7 @@ namespace DeskSwipe.Settings
                 return;
 
             var normalized =
-                NormalizeGestureScanCode(
+                GestureScanCode.Normalize(
                     GestureScanCodeTextBox.Text);
 
             if (normalized != GestureScanCodeTextBox.Text)
@@ -240,24 +239,6 @@ namespace DeskSwipe.Settings
 
             await SettingsStore.SaveAsync(
                 _settings);
-        }
-
-        private static string NormalizeGestureScanCode(
-            string value)
-        {
-            var cleaned =
-                Regex.Replace(
-                    value?.Trim() ?? string.Empty,
-                    "[^0-9a-fA-F]",
-                    string.Empty);
-
-            if (cleaned.Length == 0)
-                cleaned = "10F";
-
-            if (cleaned.Length > 6)
-                cleaned = cleaned[..6];
-
-            return cleaned.ToUpperInvariant();
         }
 
         private async void ThemeChanged(
@@ -307,7 +288,7 @@ namespace DeskSwipe.Settings
                 };
 
             _settings.GestureScanCode =
-                NormalizeGestureScanCode(
+                GestureScanCode.Normalize(
                     GestureScanCodeTextBox.Text);
 
             _settings.ShowEdgeMessage =

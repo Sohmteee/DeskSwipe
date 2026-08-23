@@ -35,6 +35,9 @@ jobs:
       - name: Build Settings app
         run: dotnet build src/DeskSwipe.Settings/DeskSwipe.Settings.csproj -c Release -r win-x64 --no-restore
 
+      - name: Run settings tests
+        run: dotnet test tests/DeskSwipe.Settings.Core.Tests/DeskSwipe.Settings.Core.Tests.csproj -c Release --nologo
+
       - name: Validate AutoHotkey gesture source
         shell: pwsh
         run: |

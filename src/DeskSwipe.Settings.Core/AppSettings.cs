@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -22,6 +22,26 @@ namespace DeskSwipe.Settings
         public string Theme { get; set; } = "system";
     }
 
+    public static class GestureScanCode
+    {
+        public static string Normalize(string value)
+        {
+            var cleaned =
+                System.Text.RegularExpressions.Regex.Replace(
+                    value?.Trim() ?? string.Empty,
+                    "[^0-9a-fA-F]",
+                    string.Empty);
+
+            if (cleaned.Length == 0)
+                cleaned = "10F";
+
+            if (cleaned.Length > 6)
+                cleaned = cleaned[..6];
+
+            return cleaned.ToUpperInvariant();
+        }
+    }
+
     public static class SettingsStore
     {
         private static readonly JsonSerializerOptions JsonOptions =
@@ -42,19 +62,23 @@ namespace DeskSwipe.Settings
                 DirectoryPath,
                 "settings.json");
 
-        public static async Task<AppSettings> LoadAsync()
+        public static async Task<AppSettings> LoadAsync(
+            string? directory = null)
         {
+            var path =
+                SettingsFilePath(directory);
+
             try
             {
-                if (!File.Exists(FilePath))
+                if (!File.Exists(path))
                 {
                     var defaults = new AppSettings();
-                    await SaveAsync(defaults);
+                    await SaveAsync(defaults, directory);
                     return defaults;
                 }
 
                 var json =
-                    await File.ReadAllTextAsync(FilePath);
+                    await File.ReadAllTextAsync(path);
 
                 return JsonSerializer.Deserialize<AppSettings>(
                            json,
@@ -68,10 +92,14 @@ namespace DeskSwipe.Settings
         }
 
         public static async Task SaveAsync(
-            AppSettings settings)
+            AppSettings settings,
+            string? directory = null)
         {
+            var path =
+                SettingsFilePath(directory);
+
             Directory.CreateDirectory(
-                DirectoryPath);
+                Path.GetDirectoryName(path)!);
 
             var json =
                 JsonSerializer.Serialize(
@@ -79,10 +107,19 @@ namespace DeskSwipe.Settings
                     JsonOptions);
 
             await File.WriteAllTextAsync(
-                FilePath,
+                path,
                 json);
+        }
+
+        private static string SettingsFilePath(
+            string? directory)
+        {
+            if (string.IsNullOrEmpty(directory))
+                return FilePath;
+
+            return Path.Combine(
+                directory,
+                "settings.json");
         }
     }
 }
-
-
