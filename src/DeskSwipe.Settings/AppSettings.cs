@@ -7,6 +7,8 @@ namespace DeskSwipe.Settings
 {
     public sealed class AppSettings
     {
+        public string GestureScanCode { get; set; } = "10F";
+
         public string SwipeDirection { get; set; } = "natural";
         public string EdgeBehavior { get; set; } = "bounce";
         public string BounceStrength { get; set; } = "balanced";

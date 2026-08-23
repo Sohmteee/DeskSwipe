@@ -103,6 +103,24 @@
                                 </ComboBox>
                             </Grid>
 
+                            <Grid ColumnDefinitions="*,220">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Gesture scan code"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock
+                                        Text="Hex scan code your touchpad sends for three-finger flicks. Default: 10F."
+                                        FontSize="12"
+                                        Opacity="0.65" />
+                                </StackPanel>
+
+                                <TextBox
+                                    x:Name="GestureScanCodeTextBox"
+                                    Grid.Column="1"
+                                    MaxLength="6"
+                                    HorizontalAlignment="Stretch" />
+                            </Grid>
+
                         </StackPanel>
                     </Border>
                 </StackPanel>

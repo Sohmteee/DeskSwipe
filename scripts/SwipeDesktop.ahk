@@ -75,6 +75,7 @@ GetJsonBool(json, key, defaultValue) {
 
 LoadDeskSwipeSettings() {
     settings := Map(
+        "gestureScanCode", "10F",
         "swipeDirection", "natural",
         "edgeBehavior", "bounce",
         "showEdgeMessage", true,
@@ -90,6 +91,13 @@ LoadDeskSwipeSettings() {
 
     try {
         json := FileRead(path, "UTF-8")
+
+        settings["gestureScanCode"] :=
+            GetJsonString(
+                json,
+                "gestureScanCode",
+                "10F"
+            )
 
         settings["swipeDirection"] :=
             GetJsonString(
@@ -455,13 +463,110 @@ SwitchDesktop(direction) {
     }
 }
 
-<!+SC10F::{
-    SwitchDesktop("left")
+; ============================================================
+; Gesture hotkey registration
+; ============================================================
+
+NormalizeGestureScanCode(value) {
+    cleaned :=
+        StrUpper(
+            RegExReplace(
+                Trim(value),
+                "[^0-9a-fA-F]"
+            )
+        )
+
+    if cleaned = ""
+        cleaned := "10F"
+
+    return "SC" SubStr(cleaned, 1, 6)
 }
 
-<!SC10F::{
-    SwitchDesktop("right")
+ApplyGestureHotkeys(scanCode) {
+    global LeftGestureFunc
+    global RightGestureFunc
+
+    LeftGestureFunc :=
+        (*) => SwitchDesktop("left")
+
+    RightGestureFunc :=
+        (*) => SwitchDesktop("right")
+
+    Hotkey(
+        "<!+" scanCode,
+        LeftGestureFunc,
+        "On"
+    )
+
+    Hotkey(
+        "<!" scanCode,
+        RightGestureFunc,
+        "On"
+    )
 }
+
+DisableGestureHotkeys(scanCode) {
+    global LeftGestureFunc
+    global RightGestureFunc
+
+    if LeftGestureFunc != "" {
+        try Hotkey(
+            "<!+" scanCode,
+            LeftGestureFunc,
+            "Off"
+        )
+    }
+
+    if RightGestureFunc != "" {
+        try Hotkey(
+            "<!" scanCode,
+            RightGestureFunc,
+            "Off"
+        )
+    }
+}
+
+SyncGestureHotkeys() {
+    global RegisteredGestureKey
+    global LeftGestureFunc
+    global RightGestureFunc
+
+    settings := LoadDeskSwipeSettings()
+
+    scanCode :=
+        NormalizeGestureScanCode(
+            settings["gestureScanCode"]
+        )
+
+    if scanCode = RegisteredGestureKey
+        return
+
+    try {
+        DisableGestureHotkeys(RegisteredGestureKey)
+
+        ApplyGestureHotkeys(scanCode)
+
+        RegisteredGestureKey := scanCode
+    } catch {
+        ; Fall back to the default ALPS signal
+        ; when the configured code is unusable.
+        try {
+            DisableGestureHotkeys(RegisteredGestureKey)
+
+            ApplyGestureHotkeys("SC10F")
+
+            RegisteredGestureKey := "SC10F"
+        }
+    }
+}
+
+RegisteredGestureKey := ""
+LeftGestureFunc := ""
+RightGestureFunc := ""
+
+SyncGestureHotkeys()
+
+SetTimer(SyncGestureHotkeys, 1500)
 
 
 
@@ -530,6 +635,7 @@ UpdateStartWithWindowsJson(enabled) {
 
             json :=
                 '{'
+                . '"gestureScanCode":"10F",'
                 . '"swipeDirection":"natural",'
                 . '"edgeBehavior":"bounce",'
                 . '"bounceStrength":"balanced",'

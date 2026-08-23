@@ -46,8 +46,9 @@ jobs:
 
           $requiredPatterns = @(
             '#Requires AutoHotkey v2.0',
-            '<!+SC10F::',
-            '<!SC10F::',
+            'NormalizeGestureScanCode',
+            'ApplyGestureHotkeys',
+            'SyncGestureHotkeys',
             'SwitchDesktop("left")',
             'SwitchDesktop("right")'
           )
