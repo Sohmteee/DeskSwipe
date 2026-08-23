@@ -81,7 +81,7 @@ Copy-Item `
     -Recurse `
     -Force
 
-Write-Host ""Write-Host "Compiling DeskSwipeGestures..."
+Write-Host "Compiling DeskSwipeGestures..."
 Write-Host ""
 
 & $ahkCompiler `
