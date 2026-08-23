@@ -73,7 +73,36 @@ GetJsonBool(json, key, defaultValue) {
     return defaultValue
 }
 
+global CachedSettings := ""
+global CachedSettingsTime := ""
+
 LoadDeskSwipeSettings() {
+    global CachedSettings
+    global CachedSettingsTime
+
+    path := GetSettingsPath()
+
+    if !FileExist(path)
+        return ParseDeskSwipeSettings(path)
+
+    stamp := ""
+
+    try stamp := FileGetTime(path, "M")
+
+    if (stamp != ""
+        && CachedSettingsTime = stamp
+        && CachedSettings != "")
+        return CachedSettings
+
+    settings := ParseDeskSwipeSettings(path)
+
+    CachedSettings := settings
+    CachedSettingsTime := stamp
+
+    return settings
+}
+
+ParseDeskSwipeSettings(path) {
     settings := Map(
         "gestureScanCode", "10F",
         "swipeDirection", "natural",
@@ -83,8 +112,6 @@ LoadDeskSwipeSettings() {
         "messageDuration", "normal",
         "openSettingsOnStartup", false
     )
-
-    path := GetSettingsPath()
 
     if !FileExist(path)
         return settings
@@ -727,7 +754,7 @@ ToggleStartWithWindows(*) {
 ShowDeskSwipeAbout(*) {
     MsgBox(
         "DeskSwipe`n"
-        . "Version 0.2.0`n`n"
+        . "Version 0.2.1`n`n"
         . "Three-finger desktop switching for Windows.",
         "About DeskSwipe",
         "Iconi"

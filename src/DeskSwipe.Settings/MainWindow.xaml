@@ -299,7 +299,7 @@
                                     Text="DeskSwipe"
                                     FontWeight="SemiBold" />
                                 <TextBlock
-                                    Text="Version 0.2.0"
+                                    Text="Version 0.2.1"
                                     FontSize="12"
                                     Opacity="0.65" />
                             </StackPanel>

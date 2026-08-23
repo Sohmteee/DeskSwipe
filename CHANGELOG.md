@@ -8,6 +8,13 @@ All notable changes to DeskSwipe will be documented in this file.
 - Configurable gesture scan code in Settings, removing the hard dependency on `SC10F`
 - The gesture runtime now rebinds hotkeys automatically when the scan code changes
 
+### Changed
+- The gesture runtime caches settings in memory and reloads them only when the file changes, instead of reading settings on every gesture
+
+### Fixed
+- Stale About dialog version strings
+- Malformed `Write-Host` line in `build.ps1`
+
 ## v0.2.1
 
 ### Added
