@@ -1,8 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Windowing;
 using WinRT.Interop;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace DeskSwipe.Settings
     {
         private AppSettings _settings = new();
         private bool _loading = true;
+        private bool _updatingScanCode = false;
 
         public MainWindow()
         {
@@ -103,6 +105,9 @@ namespace DeskSwipe.Settings
                     _ => 1
                 };
 
+            GestureScanCodeTextBox.Text =
+                _settings.GestureScanCode;
+
             EdgeMessageToggle.IsOn =
                 _settings.ShowEdgeMessage;
 
@@ -153,6 +158,9 @@ namespace DeskSwipe.Settings
             BounceStrengthComboBox.SelectionChanged +=
                 SettingChanged;
 
+            GestureScanCodeTextBox.TextChanged +=
+                GestureScanCodeChanged;
+
             MessageStyleComboBox.SelectionChanged +=
                 SettingChanged;
 
@@ -197,6 +205,60 @@ namespace DeskSwipe.Settings
     await SettingsStore.SaveAsync(
         _settings);
 }
+
+        private async void GestureScanCodeChanged(
+            object sender,
+            TextChangedEventArgs e)
+        {
+            if (_loading || _updatingScanCode)
+                return;
+
+            var normalized =
+                NormalizeGestureScanCode(
+                    GestureScanCodeTextBox.Text);
+
+            if (normalized != GestureScanCodeTextBox.Text)
+            {
+                _updatingScanCode = true;
+
+                var caret =
+                    GestureScanCodeTextBox.SelectionStart;
+
+                GestureScanCodeTextBox.Text =
+                    normalized;
+
+                GestureScanCodeTextBox.SelectionStart =
+                    Math.Min(
+                        caret,
+                        normalized.Length);
+
+                _updatingScanCode = false;
+            }
+
+            _settings.GestureScanCode =
+                normalized;
+
+            await SettingsStore.SaveAsync(
+                _settings);
+        }
+
+        private static string NormalizeGestureScanCode(
+            string value)
+        {
+            var cleaned =
+                Regex.Replace(
+                    value?.Trim() ?? string.Empty,
+                    "[^0-9a-fA-F]",
+                    string.Empty);
+
+            if (cleaned.Length == 0)
+                cleaned = "10F";
+
+            if (cleaned.Length > 6)
+                cleaned = cleaned[..6];
+
+            return cleaned.ToUpperInvariant();
+        }
 
         private async void ThemeChanged(
             object sender,
@@ -243,6 +305,10 @@ namespace DeskSwipe.Settings
                     2 => "firm",
                     _ => "balanced"
                 };
+
+            _settings.GestureScanCode =
+                NormalizeGestureScanCode(
+                    GestureScanCodeTextBox.Text);
 
             _settings.ShowEdgeMessage =
                 EdgeMessageToggle.IsOn;
@@ -410,25 +476,3 @@ namespace DeskSwipe.Settings
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

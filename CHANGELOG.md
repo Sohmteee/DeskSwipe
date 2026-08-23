@@ -2,6 +2,12 @@
 
 All notable changes to DeskSwipe will be documented in this file.
 
+## Unreleased
+
+### Added
+- Configurable gesture scan code in Settings, removing the hard dependency on `SC10F`
+- The gesture runtime now rebinds hotkeys automatically when the scan code changes
+
 ## v0.2.1
 
 ### Added

@@ -99,7 +99,7 @@ Double-clicking the tray icon opens Settings.
 
 On the target Dell/ALPS touchpad, three-finger horizontal flicks are exposed as the extended scan code `SC10F`.
 
-DeskSwipe captures those gestures using AutoHotkey v2.
+DeskSwipe captures those gestures using AutoHotkey v2 and binds the scan code configured in Settings (`10F` by default).
 
 Normal desktop changes use the native Windows shortcuts `Win + Ctrl + Left` and `Win + Ctrl + Right`.
 
@@ -171,10 +171,12 @@ DeskSwipe was developed for older Dell/ALPS touchpads that expose three-finger h
 
 The verified development touchpad is a Dell ALPS touchpad with hardware ID `ACPI\DLL0532`.
 
-The current gesture implementation depends on the ALPS driver emitting the extended scan code `SC10F` for three-finger horizontal flicks:
+The gesture implementation binds the scan code configured in Settings for three-finger horizontal flicks (default `10F`, matching the ALPS development hardware):
 
-- `<!+SC10F` switches one desktop to the left
-- `<!SC10F` switches one desktop to the right
+- `<!+` + scan code switches one desktop to the left
+- `<!` + scan code switches one desktop to the right
+
+If your touchpad emits a different scan code, set it under **Gestures → Gesture scan code** in Settings and DeskSwipe rebinds the gesture within a few seconds.
 
 Other touchpads may require different gesture detection. If your touchpad uses Windows Precision Touchpad gestures, Synaptics, ELAN, HID-over-I2C, or a different ALPS driver, DeskSwipe may not detect three-finger swipes until broader gesture detection is added.
 
@@ -184,8 +186,8 @@ Other touchpads may require different gesture detection. If your touchpad uses W
 | --- | --- | --- |
 | Dell ALPS touchpad, `ACPI\DLL0532`, emitting `SC10F` | Verified | Original development target. |
 | Other ALPS touchpads emitting `SC10F` | Likely compatible | Please report the laptop model, hardware ID, driver version, and observed scan codes if it works or fails. |
-| ALPS touchpads emitting a different scan code | Not yet supported | The gesture binding currently needs a code change. |
-| Windows Precision Touchpad devices | Not supported by the current runtime | These usually expose gestures through Windows touch input rather than `SC10F`. |
+| Touchpads emitting a different keyboard-like scan code | Likely compatible | Enter your detected code in Settings under **Gesture scan code**. |
+| Windows Precision Touchpad devices | Not supported by the current runtime | These usually expose gestures through Windows touch input rather than keyboard-like scan codes. |
 | Synaptics, ELAN, HID-over-I2C, or unknown touchpads | Unknown | Open a compatibility report with hardware and scan-code details. |
 
 ### How to check your touchpad
@@ -202,10 +204,10 @@ Other touchpads may require different gesture detection. If your touchpad uses W
 ### Three-finger swipes do nothing
 
 - Confirm DeskSwipe is running in the notification area.
-- Confirm your touchpad emits `SC10F` for three-finger horizontal flicks.
+- Confirm your touchpad emits `SC10F` for three-finger horizontal flicks, or set the code your touchpad emits in Settings under **Gesture scan code**.
 - Confirm AutoHotkey hooks are not blocked by another gesture utility or touchpad driver tool.
 - Try running DeskSwipe manually once, then use the tray menu to quit and start it again.
-- If the touchpad emits a different scan code, open a bug report with the scan-code details.
+- If the touchpad emits a different scan code, set it in Settings under **Gesture scan code**, and open a bug report if it still fails.
 
 ### Windows changes desktops but DeskSwipe does not bounce at the edge
 
